@@ -1,0 +1,95 @@
+@startuml WarehouseHub_UseCase_Simple_API_DB
+left to right direction
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor LightBlue
+  BorderColor DarkBlue
+}
+skinparam actor {
+  BackgroundColor LightYellow
+  BorderColor Black
+}
+skinparam component {
+  BackgroundColor LightGreen
+  BorderColor DarkGreen
+}
+skinparam rectangle {
+  BackgroundColor #F5F5F5
+  BorderColor #333333
+}
+
+' ===== АКТЁРЫ =====
+actor "Customer\n(клиент)" as Customer
+actor "Courier\n(курьер / worker)" as Courier
+actor "Warehouse Admin\n(администратор)" as Admin
+
+' ===== СИСТЕМА =====
+rectangle "WarehouseHub — складской учёт с доставкой" {
+
+  ' ===== API ПО АКТЁРАМ =====
+  component "API: Customer\n/api/products, /api/orders" as API_C
+  component "API: Courier\n/api/shipments" as API_K
+  component "API: Admin\n/api/products, /api/warehouses,\n/api/suppliers, /api/stock" as API_A
+
+  ' ===== ПРЕЦЕДЕНТЫ CUSTOMER =====
+  usecase "Просмотреть каталог" as UC1
+  usecase "Оформить заказ" as UC2
+  usecase "Отменить заказ" as UC3
+  usecase "Отследить доставку" as UC4
+
+  ' ===== ПРЕЦЕДЕНТЫ COURIER =====
+  usecase "Просмотреть отгрузки" as UC5
+  usecase "Отгрузить заказ" as UC6
+  usecase "Подтвердить доставку" as UC7
+
+  ' ===== ПРЕЦЕДЕНТЫ ADMIN =====
+  usecase "Управлять товарами" as UC8
+  usecase "Управлять складами" as UC9
+  usecase "Управлять поставщиками" as UC10
+  usecase "Принять товар" as UC11
+  usecase "Просмотреть остатки" as UC12
+
+  ' ===== БД =====
+  component "Main DB\n(PostgreSQL)" as DB
+
+  ' ===== АКТЁР → API =====
+  Customer --> API_C : REST
+  Courier  --> API_K : REST
+  Admin    --> API_A : REST
+
+  ' ===== API → ПРЕЦЕДЕНТЫ =====
+  API_C ..> UC1
+  API_C ..> UC2
+  API_C ..> UC3
+  API_C ..> UC4
+
+  API_K ..> UC5
+  API_K ..> UC6
+  API_K ..> UC7
+
+  API_A ..> UC8
+  API_A ..> UC9
+  API_A ..> UC10
+  API_A ..> UC11
+  API_A ..> UC12
+
+  ' ===== ПРЕЦЕДЕНТЫ → БД =====
+  UC1 ..> DB
+  UC2 ..> DB
+  UC3 ..> DB
+  UC4 ..> DB
+  UC5 ..> DB
+  UC6 ..> DB
+  UC7 ..> DB
+  UC8 ..> DB
+  UC9 ..> DB
+  UC10 ..> DB
+  UC11 ..> DB
+  UC12 ..> DB
+
+  ' ===== EXTEND (2 связи) =====
+  UC3 ..> UC2 : <<extend>>
+  UC7 ..> UC6 : <<extend>>
+}
+
+@enduml
