@@ -1,0 +1,9 @@
+package ru.itmo.warehousehub.dto
+
+class StockItemResponse(
+    var id: Long?,
+    var productId: Long?,
+    var warehouseId: Long?,
+    var quantity: Int?,
+    var reserved: Int?
+)
