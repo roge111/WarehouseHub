@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+
+.src/main/kotlin/ru/itmo/warehousehub/repository/

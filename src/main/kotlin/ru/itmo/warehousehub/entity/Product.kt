@@ -21,9 +21,13 @@ class Product {
 
 
     @Column(nullable = false, precision = 10, scale = 2)
-    var price: BigDecimal = BigDecimal.ZERO,
+    var price: BigDecimal = BigDecimal.ZERO
 
     @Column(name = "created_at", nullable = false, updatable = false)
     var createdAt: LocalDateTime = LocalDateTime.now()
+
+    
+    @OneToMany(mappedBy = "product")
+    var stockItems: MutableList<StockItem> = mutableListOf()
 
 }
